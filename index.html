@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-R">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Reasons Why I Love You</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Load Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    
+    <!-- 3. Custom Styles -->
+    <style>
+        /* Use Inter as the default font */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Ensure the app is full height */
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling on the body */
+        }
+        
+        /* Special font for the "paper" */
+        .font-paper {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Twinkle animation for stars */
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.7;
+                box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 8px 2px rgba(255, 255, 255, 1);
+            }
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite;
+        }
+
+        /* Heart SVG for consistent sizing */
+        .heart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Custom scrollbar for the grid on small screens */
+        #grid-view-content {
+             /* 100vh - header/footer height */
+            height: calc(100vh - 8rem);
+            overflow-y: auto;
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        #grid-view-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        #grid-view-content {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-full">
+
+    <!-- This is the main application container -->
+    <div id="app" class="h-full">
+
+        <!-- =================================================================
+        VIEW 0: LOGIN VIEW
+        ================================================================== -->
+        <div id="login-view" class="h-full flex flex-col justify-center items-center p-4 md:p-8" style="display: none;">
+            <div class="w-full max-w-sm text-center">
+                <h1 class="text-3xl md:text-4xl font-bold text-red-300 mb-6">100 Reasons Why I Love You</h1>
+                <p class="text-gray-300 mb-4">Enter your secret passkey to unlock your story.</p>
+                
+                <input id="passkey-input" type="password" class="w-full bg-gray-800 border-2 border-gray-700 text-white rounded-lg px-4 py-3 text-center text-lg focus:outline-none focus:border-pink-500" placeholder="Your Secret Passkey">
+                
+                <button id="login-btn" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Unlock
+                </button>
+                <p id="login-error" class="text-red-400 mt-4 h-6"></p>
+            </div>
+        </div>
+
+        <!-- =================================================================
+        VIEW 0.5: LOADING VIEW
+        ================================================================== -->
+        <div id="loading-view" class="h-full flex flex-col justify-center items-center p-4 md:p-8">
+            <h1 id="loading-text" class="text-3xl md:text-4xl font-bold text-gray-300 animate-pulse">Initializing...</h1>
+        </div>
+
+        <!-- =================================================================
+        VIEW 1: HEART GRID
+        ================================================================== -->
+        <div id="grid-view" class="h-full flex flex-col p-4 md:p-8" style="display: none;">
+            <header class="text-center mb-4">
+                <h1 class="text-3xl md:text-4xl font-bold text-red-300">100 Reasons Why I Love You</h1>
+            </header>
+            
+            <!-- This container will scroll on mobile -->
+            <main id="grid-view-content" class="flex-1">
+                <div id="grid-container" class="grid grid-cols-5 sm:grid-cols-10 gap-2 md:gap-4 max-w-4xl mx-auto">
+                    <!-- Hearts will be dynamically generated here -->
+                </div>
+            </main>
+            
+            <footer class="text-center mt-4">
+                <p class="text-gray-400">Click a heart to read a reason.</p>
+                <p id="user-id" class="text-xs text-gray-600 mt-2"></p>
+            </footer>
+        </div>
+
+        <!-- =================================================================
+        VIEW 2: REASON VIEW (THE PAPER)
+        ================================================================== -->
+        <div id="reason-view" class="h-full flex-col justify-center items-center p-4" style="display: none;">
+            
+            <!-- Navigation -->
+            <button id="back-to-grid-btn" class="absolute top-4 left-4 text-gray-300 hover:text-white transition duration-300">
+                &larr; Back to Hearts
+            </button>
+            
+            <!-- The "Paper" -->
+            <div class="bg-white text-gray-800 p-6 md:p-10 rounded-lg shadow-2xl max-w-lg w-full transform transition-all duration-500 scale-95" id="paper">
+                <h2 id="reason-title" class="text-2xl md:text-3xl font-paper font-bold italic text-center mb-6">Reason #1</h2>
+                <p id="reason-text" class="text-lg md:text-xl leading-relaxed text-center min-h-[100px]">
+                    This is a reason why I love you.
+                </p>
+            </div>
+            
+            <!-- "Transform" Button -->
+            <button id="to-sky-btn" class="mt-8 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                Turn this into a star &rarr;
+            </button>
+        </div>
+
+        <!-- =================================================================
+        VIEW 3: NIGHT SKY
+        ================================================================== -->
+        <div id="sky-view" class="h-full" style="display: none;">
+            <!-- Navigation -->
+            <button id="back-to-reason-btn" class="absolute top-4 left-4 text-gray-300 hover:text-white transition duration-300 z-10">
+                &larr; Back to Reason
+            </button>
+            
+            <!-- Header -->
+            <div class="absolute top-4 right-4 text-right z-10">
+                <h2 class="text-2xl font-bold text-blue-200">Our Night Sky</h2>
+                <p id="unlocked-count" class="text-blue-300">0 / 100 Stars</p>
+            </div>
+            
+            <!-- Star Container -->
+            <div id="sky-container" class="absolute inset-0 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
+                <!-- Stars will be dynamically generated here -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =================================================================
+    JAVASCRIPT LOGIC
+    ================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        
+            // --- STATE ---
+            let currentView = 'loading';
+            let unlockedLevel = 1;
+            let currentReasonIndex = -1;
+            let reasons = [];
+            let stars = [];
+        
+            // --- DOM ELEMENTS ---
+            const loginView = document.getElementById('login-view');
+            const passkeyInput = document.getElementById('passkey-input');
+            const loginButton = document.getElementById('login-btn');
+            const loginError = document.getElementById('login-error');
+            const loadingView = document.getElementById('loading-view');
+            const loadingText = document.getElementById('loading-text');
+            const gridView = document.getElementById('grid-view');
+            const reasonView = document.getElementById('reason-view');
+            const skyView = document.getElementById('sky-view');
+            const gridContainer = document.getElementById('grid-container');
+            const reasonTitle = document.getElementById('reason-title');
+            const reasonText = document.getElementById('reason-text');
+            const skyContainer = document.getElementById('sky-container');
+            const toSkyButton = document.getElementById('to-sky-btn');
+            const backToGridButton = document.getElementById('back-to-grid-btn');
+            const backToReasonButton = document.getElementById('back-to-reason-btn');
+            const unlockedCountText = document.getElementById('unlocked-count');
+            const paper = document.getElementById('paper');
+            const userIdText = document.getElementById('user-id');
+        
+            const TOTAL_HEARTS = 100;
+        
+            // --- REASONS DATA ---
+            async function generateReasons() {
+                try {
+                    const response = await fetch('reasons.txt');
+                    const text = await response.text();
+                    reasons = text.split('\n').filter(r => r.trim() !== '');
+                } catch (err) {
+                    console.warn('Could not load reasons.txt, using defaults.');
+                    reasons = Array.from({ length: TOTAL_HEARTS }, (_, i) => `Reason #${i + 1}`);
+                }
+        
+                if (reasons.length < TOTAL_HEARTS) {
+                    const len = reasons.length;
+                    for (let i = len; i < TOTAL_HEARTS; i++) {
+                        reasons.push(`Reason #${i + 1}`);
+                    }
+                }
+            }
+        
+            // --- LOCAL STORAGE ---
+            function saveState() {
+                const state = { unlockedLevel, stars };
+                localStorage.setItem('loveAppProgress', JSON.stringify(state));
+            }
+        
+            function loadState() {
+                const saved = localStorage.getItem('loveAppProgress');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    unlockedLevel = state.unlockedLevel || 1;
+                    stars = state.stars || [];
+                }
+            }
+        
+            // --- VIEW NAVIGATION ---
+            function showView(viewName) {
+                currentView = viewName;
+                loginView.style.display = 'none';
+                loadingView.style.display = 'none';
+                gridView.style.display = 'none';
+                reasonView.style.display = 'none';
+                skyView.style.display = 'none';
+        
+                paper.classList.remove('scale-100', 'opacity-100');
+                paper.classList.add('scale-95', 'opacity-0');
+        
+                if (viewName === 'login') loginView.style.display = 'flex';
+                if (viewName === 'loading') loadingView.style.display = 'flex';
+                if (viewName === 'grid') gridView.style.display = 'flex';
+                if (viewName === 'reason') {
+                    reasonView.style.display = 'flex';
+                    setTimeout(() => {
+                        paper.classList.add('scale-100', 'opacity-100');
+                    }, 100);
+                }
+                if (viewName === 'sky') {
+                    skyView.style.display = 'block';
+                    renderSky();
+                }
+            }
+        
+            // --- GRID LOGIC ---
+            function initializeGrid() {
+                gridContainer.innerHTML = '';
+                for (let i = 0; i < TOTAL_HEARTS; i++) {
+                    const heartWrapper = document.createElement('div');
+                    heartWrapper.className = 'aspect-square relative flex items-center justify-center transition-all duration-300';
+                    heartWrapper.id = `heart-${i}`;
+                    heartWrapper.dataset.index = i;
+        
+                    const svgNS = "http://www.w3.org/2000/svg";
+                    const svg = document.createElementNS(svgNS, "svg");
+                    svg.setAttribute("class", "heart-svg");
+                    svg.setAttribute("fill", "currentColor");
+                    svg.setAttribute("viewBox", "0 0 20 20");
+        
+                    const path = document.createElementNS(svgNS, "path");
+                    path.setAttribute("fill-rule", "evenodd");
+                    path.setAttribute("d", "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z");
+                    path.setAttribute("clip-rule", "evenodd");
+                    svg.appendChild(path);
+        
+                    const numberText = document.createElement('span');
+                    numberText.className = 'absolute font-bold text-sm md:text-base';
+                    numberText.textContent = i + 1;
+        
+                    heartWrapper.appendChild(svg);
+                    heartWrapper.appendChild(numberText);
+        
+                    updateHeartState(heartWrapper, i);
+                    heartWrapper.addEventListener('click', () => onHeartClick(i));
+                    gridContainer.appendChild(heartWrapper);
+                }
+            }
+        
+            function updateHeartState(heartElement, index) {
+                const number = index + 1;
+                const svg = heartElement.querySelector('svg');
+                const text = heartElement.querySelector('span');
+        
+                svg.classList.remove('text-gray-600', 'text-red-600', 'text-pink-400', 'animate-pulse');
+                text.classList.remove('text-gray-400', 'text-red-100', 'text-pink-100');
+                heartElement.classList.remove('opacity-50', 'cursor-not-allowed', 'cursor-pointer', 'hover:opacity-80', 'hover:scale-105');
+        
+                if (number < unlockedLevel) {
+                    svg.classList.add('text-pink-400');
+                    text.classList.add('text-pink-100');
+                    heartElement.classList.add('cursor-pointer', 'hover:opacity-80', 'hover:scale-105');
+                } else if (number === unlockedLevel) {
+                    svg.classList.add('text-red-600', 'animate-pulse');
+                    text.classList.add('text-red-100');
+                    heartElement.classList.add('cursor-pointer', 'hover:opacity-80', 'hover:scale-105');
+                } else {
+                    svg.classList.add('text-gray-600');
+                    text.classList.add('text-gray-400');
+                    heartElement.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        
+            function updateAllHearts() {
+                for (let i = 0; i < TOTAL_HEARTS; i++) {
+                    const heartElement = document.getElementById(`heart-${i}`);
+                    if (heartElement) updateHeartState(heartElement, i);
+                }
+            }
+        
+            function onHeartClick(index) {
+                const number = index + 1;
+                if (number > unlockedLevel) return;
+        
+                currentReasonIndex = index;
+                reasonTitle.textContent = `Reason #${number}`;
+                reasonText.textContent = reasons[index];
+                showView('reason');
+            }
+        
+            // --- REASON LOGIC ---
+            function onToSkyClick() {
+                const number = currentReasonIndex + 1;
+                if (number === unlockedLevel) {
+                    unlockedLevel++;
+                    addStar();
+                    saveState();
+                    updateAllHearts();
+                }
+                showView('sky');
+            }
+        
+            // --- SKY LOGIC ---
+            function addStar() {
+                const newStar = {
+                    x: Math.random() * 100,
+                    y: Math.random() * 100,
+                    size: Math.random() * 2 + 1.5,
+                    delay: Math.random() * 4
+                };
+                stars.push(newStar);
+            }
+        
+            function renderSky() {
+                skyContainer.innerHTML = '';
+                stars.forEach(star => {
+                    const s = document.createElement('div');
+                    s.className = 'star';
+                    s.style.left = `${star.x}%`;
+                    s.style.top = `${star.y}%`;
+                    s.style.width = `${star.size}px`;
+                    s.style.height = `${star.size}px`;
+                    s.style.animationDelay = `${star.delay}s`;
+                    skyContainer.appendChild(s);
+                });
+                unlockedCountText.textContent = `${stars.length} / 100 Stars`;
+            }
+        
+            // --- LOGIN ---
+            function handleLogin() {
+                const passkey = passkeyInput.value.trim();
+                if (passkey === '250703') {
+                    showView('loading');
+                    setTimeout(() => {
+                        loadState();
+                        initializeGrid();
+                        renderSky();
+                        showView('grid');
+                    }, 1000);
+                } else {
+                    loginError.textContent = 'Incorrect passkey.';
+                }
+            }
+        
+            // --- INIT ---
+            async function init() {
+                loginButton.addEventListener('click', handleLogin);
+                passkeyInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleLogin(); });
+                toSkyButton.addEventListener('click', onToSkyClick);
+                backToGridButton.addEventListener('click', () => showView('grid'));
+                backToReasonButton.addEventListener('click', () => showView('reason'));
+        
+                await generateReasons();
+                showView('login');
+            }
+        
+            init();
+        });
+        </script>        
+
+</body>
+</html>
+
+
