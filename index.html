@@ -51,10 +51,11 @@
     <!-- LOGIN -->
     <div id="login-view" class="h-full flex flex-col justify-center items-center p-4 md:p-8" style="display:none;">
         <div class="w-full max-w-sm text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-red-300 mb-6">100 Reasons Why I Love You</h1>
-            <p class="text-gray-300 mb-4">Enter your secret passkey to unlock your story.</p>
-            <input id="passkey-input" type="password" class="w-full bg-gray-800 border-2 border-gray-700 text-white rounded-lg px-4 py-3 text-center text-lg focus:outline-none focus:border-pink-500" placeholder="Your Secret Passkey">
-            <button id="login-btn" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+            <h1 class="text-3xl md:text-4xl font-bold text-red-300 mb-6">100 Reasons Why I Love You </h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-red-300 mb-6">🌟💌🐱🐭🌸</h1>
+            <p class="text-gray-300 mb-4">Enter password:</p>
+            <input id="passkey-input" type="password" class="w-full bg-gray-800 border-2 border-gray-700 text-white rounded-lg px-4 py-3 text-center text-lg focus:outline-none focus:border-blue-400" placeholder="Hint: Your Bday DDMMYY">
+            <button id="login-btn" class="mt-6 w-full bg-blue-200 hover:bg-blue-300 text-black font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
                 Unlock
             </button>
             <p id="login-error" class="text-red-400 mt-4 h-6"></p>
@@ -90,8 +91,8 @@
             <h2 id="reason-title" class="text-2xl md:text-3xl font-paper font-bold italic text-center mb-6">Reason #1</h2>
             <p id="reason-text" class="text-lg md:text-xl leading-relaxed text-center min-h-[100px]">This is a reason why I love you.</p>
         </div>
-        <button id="to-sky-btn" class="mt-8 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-            Turn this into a star &rarr;
+        <button id="to-sky-btn" class="mt-8 bg-blue-200 hover:bg-blue-300 text-black font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+            Click me!!! 🌟
         </button>
     </div>
 
@@ -214,8 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const img=document.createElement('img');
             img.src=`handheart${heartNum}.png`;
             img.className='w-full h-full object-contain transition-transform duration-300';
-            const span=document.createElement('span');
-            span.className='absolute font-bold text-sm md:text-base';
+            const span=document.createElement('span'); 
+            span.className = 'absolute font-bold text-sm md:text-base text-gray-500 drop-shadow-md';
             span.textContent=i+1;
             div.append(img,span);
             updateHeartState(div,i);
