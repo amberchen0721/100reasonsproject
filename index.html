@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
+
 <head>
-    <meta charset="UTF-R">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>100 Reasons Why I Love You</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.23.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.23.0/firebase-database-compat.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; height: 100%; margin: 0; overflow: hidden; }
@@ -44,6 +47,7 @@
         }
 
     </style>
+
 </head>
 <body class="bg-gray-900 text-white h-full">
 <div id="app" class="h-full">
@@ -117,6 +121,18 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGtGTBS_yRo1Vqvmo9fVvNQIgz1FBuERA",
+        databaseURL: "https://proj-9d2f2-default-rtdb.asia-southeast1.firebasedatabase.app",  
+        authDomain: "proj-9d2f2.firebaseapp.com",
+        projectId: "proj-9d2f2",
+        storageBucket: "proj-9d2f2.firebasestorage.app",
+        messagingSenderId: "81444916465",
+        appId: "1:81444916465:web:63607d57a6d024c9502d50"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     let currentView = 'loading';
     let unlockedLevel = 1;
