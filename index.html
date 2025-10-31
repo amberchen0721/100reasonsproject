@@ -36,6 +36,8 @@
         z-index: 50;
         opacity: 0;
         transition: opacity 0.4s ease;
+
+        display: none;
     }
     #cartoon-couple {
         position: absolute;
@@ -278,9 +280,16 @@
         }
     
         function addStar(){
-            stars.push({x:Math.random()*100,y:Math.random()*100,size:Math.random()*2+1.5,delay:Math.random()*4});
+            const size = Math.random() * 2 + 1.5;
+            // keep stars fully within screen by using 0–(100 - size%)
+            stars.push({
+                x: Math.random() * (100 - (size/skyContainer.offsetWidth*100)),
+                y: Math.random() * (100 - (size/skyContainer.offsetHeight*100)),
+                size,
+                delay: Math.random() * 4
+            });
         }
-    
+
         function renderSky(){
             skyContainer.innerHTML='';
             stars.forEach(star=>{
